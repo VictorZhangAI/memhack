@@ -37,9 +37,11 @@ int main()
 	{
 		if(sigsetjmp(jump_buffer, 1) == 0)
 		{
-			volatile int *p = (int *)addr;
-			int value = *p;
-			printf("valid addr: 0x%lx, val: %d\n", addr, value);
+			char vec;
+			if (mincore((void *)addr, pagesize, &vec) == 0) 
+			{
+				printf("MAPPED addr: 0x%lx\n", addr);
+			}
 		}
 		else
 		{
